@@ -4,7 +4,7 @@ Calendario anual, mensual y semanal para el correcto funcionamiento de días ocu
 
 ## Modelo de Datos
 
-![image](https://github.com/Nudack/Proyecto/assets/114146534/1a9c63bd-1aa9-415d-af09-d37c832b3cb8)
+![image](ModeloDatos.jpg)
 
 
 ## Mockup Figma

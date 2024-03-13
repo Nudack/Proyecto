@@ -1,5 +1,5 @@
 # Proyecto final de curso DAM 23-24: HospedaFácil
-![image](https://github.com/Nudack/Proyecto/assets/114146534/1a9c63bd-1aa9-415d-af09-d37c832b3cb8)
+![image](/Anteproyecto/ModeloDatos.jpg)
 
 
 Una agenda de días disponibles, entradas y salidas de huéspedes, horarios de la misma con margen de limpieza y material higiénico necesarias para la limpieza (cortinas, sabanas, toallas, papel higiénico, etc.) de acuerdo a la cantidad de huéspedes hospedados.
