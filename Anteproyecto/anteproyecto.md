@@ -6,7 +6,14 @@ Calendario anual, mensual y semanal para el correcto funcionamiento de días ocu
 
 ![image](ModeloDatos.jpg)
 
+[Modelo de datos (archivo StarUML)](anteProyecto.mdj)
+
+![image](modeloEjemplo.png)
+
+[Ejemplo de modelo de datos (archivo docs)](modeloEjemplo.ods)
 
 ## Mockup Figma
 
-![image](image.png)
+![image](Mockup.png)
+
+[Mockup (archivo Figma)](Anteproyecto.fig)
