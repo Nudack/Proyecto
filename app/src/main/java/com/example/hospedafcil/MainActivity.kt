@@ -10,8 +10,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import com.example.hospedafcil.ui.theme.HospedaFácilTheme
+import com.example.hospedafcil.ui.theme.hospedaFacil.ui.HospedaFacilApp
+import com.example.hospedafcil.ui.theme.hospedaFacil.viewModelHF.HospedaViewModel
 import com.example.hospedafcil.ui.theme.login.ui.LoginScreen
-import com.example.hospedafcil.ui.theme.login.viewModel.LoginViewModel
+import com.example.hospedafcil.ui.theme.login.viewModelL.LoginViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,14 +25,11 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-
-                    //crear NavHost
-
                     var cambiarPantalla = rememberSaveable { mutableStateOf(true) }
                     if (cambiarPantalla.value){
                     LoginScreen(LoginViewModel(), continuar = {cambiarPantalla.value = false})
                     }else{
-
+                        HospedaFacilApp(HospedaViewModel())
                     }
                 }
             }

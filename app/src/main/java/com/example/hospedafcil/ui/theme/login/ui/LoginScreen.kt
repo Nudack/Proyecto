@@ -23,7 +23,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.hospedafcil.R
-import com.example.hospedafcil.ui.theme.login.viewModel.LoginViewModel
+import com.example.hospedafcil.ui.theme.login.viewModelL.LoginViewModel
 
 @Composable
 fun LoginScreen (
