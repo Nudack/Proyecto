@@ -1,14 +1,19 @@
 package com.example.hospedafcil.ui.theme.hospedaFacil.ui
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -19,12 +24,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
-import com.example.hospedafcil.ui.theme.hospedaFacil.viewModelHF.HospedaViewModel
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -38,6 +45,7 @@ import com.example.hospedafcil.ui.theme.home.ui.HomeScreen
 import com.example.hospedafcil.ui.theme.horario.ui.HorarioScreen
 import com.example.hospedafcil.ui.theme.inventario.ui.InventarioScreen
 import com.example.hospedafcil.ui.theme.nota.ui.NotaScreen
+import com.example.hospedafcil.ui.theme.Purple80
 
 enum class Screens {
     Home,
@@ -51,15 +59,14 @@ enum class Screens {
 
 @Composable
 fun HospedaFacilApp(
-    viewModel: HospedaViewModel,
     navController: NavHostController = rememberNavController()
     ){
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = Screens.valueOf(
         backStackEntry?.destination?.route ?: Screens.Home.name
     )
-
-    Scaffold (topBar = { HospedaTopAppBar(Modifier.fillMaxWidth(), currentScreen) },
+    Scaffold (
+        topBar = { HospedaTopAppBar(Modifier.fillMaxWidth(), currentScreen, navController) },
         bottomBar = { HospedaBottomAppBar(Modifier.fillMaxWidth(), navController) }
         ) { innerPadding ->
         NavHost(
@@ -97,12 +104,13 @@ fun HospedaFacilApp(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HospedaTopAppBar(modifier: Modifier, currentScreen: Screens){
+fun HospedaTopAppBar(modifier: Modifier, currentScreen: Screens, navController: NavHostController){
+    var expanded by remember { mutableStateOf(false) }
     CenterAlignedTopAppBar(
         title = { Text(text = currentScreen.name) },
         modifier = modifier,
         navigationIcon = {
-            IconButton(onClick = {  }) {
+            IconButton(onClick = { expanded = !expanded }) {
                 Icon(imageVector = Icons.Filled.Menu, contentDescription = "Menu de pantallas")
             }
         },
@@ -112,11 +120,43 @@ fun HospedaTopAppBar(modifier: Modifier, currentScreen: Screens){
             }
         }
     )
+    Box(modifier = Modifier.wrapContentSize(Alignment.TopStart).padding(top = 51.dp, start = 8.dp)){
+        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            DropdownMenuItem(
+                text = { Text(text = "Home") },
+                onClick = { navController.navigate(Screens.Home.name) ; expanded = !expanded }
+            )
+            DropdownMenuItem(
+                text = { Text(text = "Casas") },
+                onClick = { navController.navigate(Screens.Casas.name) ; expanded = !expanded }
+            )
+            DropdownMenuItem(
+                text = { Text(text = "Apartamentos") },
+                onClick = { navController.navigate(Screens.Apartamentos.name) ; expanded = !expanded }
+            )
+            DropdownMenuItem(
+                text = { Text(text = "Habitaciones") },
+                onClick = { navController.navigate(Screens.Habitaciones.name) ; expanded = !expanded }
+            )
+            DropdownMenuItem(
+                text = { Text(text = "Inventario") },
+                onClick = { navController.navigate(Screens.Inventario.name) ; expanded = !expanded }
+            )
+            DropdownMenuItem(
+                text = { Text(text = "Notas") },
+                onClick = { navController.navigate(Screens.Notas.name) ; expanded = !expanded }
+            )
+            DropdownMenuItem(
+                text = { Text(text = "Horario") },
+                onClick = { navController.navigate(Screens.Horario.name) ; expanded = !expanded }
+            )
+        }
+    }
 }
 
 @Composable
 fun HospedaBottomAppBar(modifier: Modifier, navController: NavHostController){
-    var selectedItem by remember { mutableIntStateOf(0) }
+    val selectedItem by remember { mutableIntStateOf(0) }
     val listItems = listOf(
         NavigationBarItem(
             route = Screens.Notas.name,
@@ -133,7 +173,6 @@ fun HospedaBottomAppBar(modifier: Modifier, navController: NavHostController){
             unSelectedIcono = painterResource(id = R.drawable.baseline_date_range_24)
         )
     )
-
     NavigationBar (modifier = modifier) {
         listItems.forEachIndexed { index, item ->
             NavigationBarItem(
@@ -151,4 +190,3 @@ data class NavigationBarItem(
     val selectedIcono: Painter,
     val unSelectedIcono: Painter,
 )
-

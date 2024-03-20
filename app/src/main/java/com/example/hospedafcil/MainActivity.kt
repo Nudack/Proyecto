@@ -11,7 +11,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import com.example.hospedafcil.ui.theme.HospedaFácilTheme
 import com.example.hospedafcil.ui.theme.hospedaFacil.ui.HospedaFacilApp
-import com.example.hospedafcil.ui.theme.hospedaFacil.viewModelHF.HospedaViewModel
 import com.example.hospedafcil.ui.theme.login.ui.LoginScreen
 import com.example.hospedafcil.ui.theme.login.viewModelL.LoginViewModel
 
@@ -29,7 +28,7 @@ class MainActivity : ComponentActivity() {
                     if (cambiarPantalla.value){
                     LoginScreen(LoginViewModel(), continuar = {cambiarPantalla.value = false})
                     }else{
-                        HospedaFacilApp(HospedaViewModel())
+                        HospedaFacilApp()
                     }
                 }
             }
