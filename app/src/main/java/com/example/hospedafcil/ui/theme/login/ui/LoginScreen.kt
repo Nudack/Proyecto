@@ -33,7 +33,6 @@ fun LoginScreen (
     Column (
         modifier = Modifier.fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         val email: String by viewModel.email.observeAsState(initial = "")
@@ -43,7 +42,9 @@ fun LoginScreen (
         Image(
             painter = painterResource(id = R.drawable.logo),
             contentDescription = "inicio de sesion",
-            Modifier.size(250.dp)
+            Modifier
+                .size(250.dp)
+                .padding(top = 200.dp)
         )
         Spacer(modifier = Modifier.padding(16.dp))
         EmailField(email) { viewModel.onLoginChanged(it, password) }
