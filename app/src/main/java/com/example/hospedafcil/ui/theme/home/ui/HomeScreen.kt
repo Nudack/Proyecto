@@ -2,12 +2,14 @@ package com.example.hospedafcil.ui.theme.home.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.IconButton
@@ -67,17 +69,15 @@ fun CarouselCard(sliderList: List<Int>){
         HorizontalPager(
             state = pagerState,
             modifier = Modifier
-                .height(300.dp)
+                .height(250.dp)
                 .align(Alignment.CenterHorizontally),
             verticalAlignment = Alignment.CenterVertically
         ) {page ->
-            IconButton(onClick = {  }) {
-                Image(
-                    painter = painterResource(id = sliderList[page]),
-                    modifier = Modifier.fillMaxSize(),
-                    contentDescription = null
-                )
-            }
+            Image(
+                painter = painterResource(id = sliderList[page]),
+                modifier = Modifier.fillMaxSize().clickable {  },
+                contentDescription = null
+            )
         }
     }
 }
