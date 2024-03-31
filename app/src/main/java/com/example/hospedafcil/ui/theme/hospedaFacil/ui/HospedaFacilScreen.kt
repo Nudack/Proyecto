@@ -74,7 +74,6 @@ fun HospedaFacilApp(
             startDestination = Screens.Home.name,
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
                 .padding(innerPadding)
             ){
             composable(route = Screens.Home.name){
@@ -174,11 +173,11 @@ fun HospedaBottomAppBar(modifier: Modifier, navController: NavHostController){
         )
     )
     NavigationBar (modifier = modifier) {
-        listItems.forEachIndexed { index, item ->
+        listItems.forEach { item ->
             NavigationBarItem(
                 icon = { Icon(painter = item.selectedIcono, contentDescription = "icono") },
                 label = { Text(item.route) },
-                selected = selectedItem == index,
+                selected = false,
                 onClick = { navController.navigate(item.route) }
             )
         }

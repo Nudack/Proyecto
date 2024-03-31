@@ -44,7 +44,7 @@ fun LoginScreen (
             contentDescription = "inicio de sesion",
             Modifier
                 .size(250.dp)
-                .padding(top = 200.dp)
+                .padding(top = 20.dp)
         )
         Spacer(modifier = Modifier.padding(16.dp))
         EmailField(email) { viewModel.onLoginChanged(it, password) }

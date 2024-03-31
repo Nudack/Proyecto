@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
@@ -36,7 +38,7 @@ fun CasaScreen(){
 
 @Composable
 fun FilledCardExample(cartas: List<Carta>) {
-    LazyColumn{items(items = cartas) { cadaCarta ->
+    LazyColumn {items(items = cartas) { cadaCarta ->
             Card {
                 Image(painter = painterResource(id = cadaCarta.imagePath), contentDescription = "imagen o imagenes de la casa", modifier = Modifier.fillMaxWidth())
 
@@ -53,7 +55,7 @@ fun FilledCardExample(cartas: List<Carta>) {
 
                 Spacer(modifier = Modifier.padding(8.dp))
 
-                Row (horizontalArrangement = Arrangement.Absolute.Right) {
+                Row {
                     IconButton(onClick = { /*TODO*/ }) {
                         Icon(imageVector = Icons.Filled.Edit, contentDescription = "edit")
                     }

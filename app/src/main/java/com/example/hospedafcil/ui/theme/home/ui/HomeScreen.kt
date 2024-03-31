@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,7 +44,12 @@ val sliderListHabitaciones = listOf(
 
 @Composable
 fun HomeScreen(){
-    Column (modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.Center) {
+    Column (
+        modifier = Modifier
+        .padding(16.dp)
+        .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.Center
+    ) {
 
         Text(text = "Casas", textAlign = TextAlign.Start)
         CarouselCard(sliderListCasas)
@@ -75,7 +82,9 @@ fun CarouselCard(sliderList: List<Int>){
         ) {page ->
             Image(
                 painter = painterResource(id = sliderList[page]),
-                modifier = Modifier.fillMaxSize().clickable {  },
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clickable { },
                 contentDescription = null
             )
         }
