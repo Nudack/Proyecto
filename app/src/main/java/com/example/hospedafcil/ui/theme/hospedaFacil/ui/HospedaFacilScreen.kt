@@ -1,13 +1,10 @@
 package com.example.hospedafcil.ui.theme.hospedaFacil.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Menu
@@ -45,7 +42,6 @@ import com.example.hospedafcil.ui.theme.home.ui.HomeScreen
 import com.example.hospedafcil.ui.theme.horario.ui.HorarioScreen
 import com.example.hospedafcil.ui.theme.inventario.ui.InventarioScreen
 import com.example.hospedafcil.ui.theme.nota.ui.NotaScreen
-import com.example.hospedafcil.ui.theme.Purple80
 
 enum class Screens {
     Home,
@@ -77,7 +73,7 @@ fun HospedaFacilApp(
                 .padding(innerPadding)
             ){
             composable(route = Screens.Home.name){
-                HomeScreen()
+                HomeScreen(navController)
             }
             composable(route = Screens.Casas.name){
                 CasaScreen()
