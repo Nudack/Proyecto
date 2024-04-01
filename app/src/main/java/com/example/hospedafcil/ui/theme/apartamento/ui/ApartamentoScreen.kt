@@ -34,7 +34,7 @@ val cartas = listOf(
 )
 
 @Composable
-fun CasaScreen(){
+fun ApartamentoScreen(){
     FilledCardExample(cartas = cartas)
 }
 

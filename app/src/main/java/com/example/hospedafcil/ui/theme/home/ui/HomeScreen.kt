@@ -76,6 +76,7 @@ fun CarouselCardCasas(sliderList: List<Int>, navController: NavHostController){
         }
     }
 }
+
 @Composable
 fun CarouselCardApartamentos(sliderList: List<Int>, navController: NavHostController){
     LazyRow (modifier = Modifier.height(300.dp)) {
@@ -101,5 +102,4 @@ fun CarouselCardHabitaciones(sliderList: List<Int>, navController: NavHostContro
         }
     }
 }
-
 

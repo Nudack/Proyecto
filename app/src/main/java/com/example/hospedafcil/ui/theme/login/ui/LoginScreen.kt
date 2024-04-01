@@ -51,10 +51,6 @@ fun LoginScreen (
         Spacer(modifier = Modifier.padding(8.dp))
         PasswordField(password) { viewModel.onLoginChanged(email, it) }
         Spacer(modifier = Modifier.padding(16.dp))
-        if (!loginEnable){
-            Text(text = "El correo o la contraseña no son correctas", color = Color.Red)
-        }
-        Spacer(modifier = Modifier.padding(16.dp))
         Button(onClick = { continuar() },
             enabled = loginEnable) {
             Text(text = "Iniciar Sesión")
