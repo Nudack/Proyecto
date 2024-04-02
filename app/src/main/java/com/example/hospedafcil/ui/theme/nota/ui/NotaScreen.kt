@@ -3,6 +3,8 @@ package com.example.hospedafcil.ui.theme.nota.ui
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -37,13 +39,15 @@ fun NotaScreen(){
 fun Notas (notas: List<Nota>) {
     LazyColumn {
         items(items = notas) { cadaNota->
-            Row {
+            Row (modifier = Modifier.height(60.dp).padding(top = 8.dp, bottom = 8.dp)) {
                 Image(
                     painter = painterResource(id = cadaNota.imagePath),
                     contentDescription = null,
                     modifier = Modifier
-                        .size(50.dp)
                         .clip(CircleShape)
+                        .size(50.dp)
+                        .padding(end = 2.dp)
+
                 )
 
                 Column{
