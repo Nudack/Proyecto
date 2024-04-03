@@ -21,8 +21,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.hospedafcil.R
 import com.example.hospedafcil.ui.theme.Carta
+import com.example.hospedafcil.ui.theme.casa.viewModel.AppViewModelProvider
+import com.example.hospedafcil.ui.theme.casa.viewModel.CasaViewModel
 
 val cartas = listOf(
     Carta(R.drawable.casa1, "Descripcion de ejemplo de la casa 1", "Casa 1"),
@@ -32,43 +35,6 @@ val cartas = listOf(
 
 @Composable
 fun CasaScreen(){
-    FilledCardExample(cartas = cartas)
+    CasaEntryScreen()
 }
 
-@Composable
-fun FilledCardExample(cartas: List<Carta>) {
-    LazyColumn {items(items = cartas) { cadaCarta ->
-            Card (Modifier.padding(16.dp)) {
-                Column (Modifier.padding(8.dp)) {
-                    Image(
-                        painter = painterResource(id = cadaCarta.imagePath),
-                        contentDescription = "imagen o imagenes de la casa",
-                        modifier = Modifier.fillMaxWidth()
-                    )
-
-                    Spacer(modifier = Modifier.padding(16.dp))
-
-                    Text(
-                        text = cadaCarta.nombre,
-                        textAlign = TextAlign.Start,
-                    )
-
-                    Spacer(modifier = Modifier.padding(8.dp))
-
-                    Text(text = cadaCarta.body)
-
-                    Spacer(modifier = Modifier.padding(8.dp))
-
-                    Row (Modifier.align(alignment = Alignment.End)) {
-                        IconButton(onClick = { /*TODO*/ }) {
-                            Icon(imageVector = Icons.Filled.Edit, contentDescription = "edit")
-                        }
-                        IconButton(onClick = { /*TODO*/ }) {
-                            Icon(imageVector = Icons.Filled.Delete, contentDescription = "borrar")
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
