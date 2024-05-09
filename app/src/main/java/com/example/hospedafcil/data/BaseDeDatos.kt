@@ -1,25 +1,14 @@
 package com.example.hospedafcil.data
 
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.hospedafcil.data.casa.Casa
-import com.example.hospedafcil.data.casa.CasaDao
+import androidx.room.TypeConverters
+import com.example.hospedafcil.data.typeConverters.BitmapTypeConverter
+import com.example.hospedafcil.data.vivienda.Vivienda
+import com.example.hospedafcil.data.vivienda.ViviendaDao
 
-@Database (entities = [Casa::class], version = 1, exportSchema = false)
+@Database (entities = [Vivienda::class, ], version = 1, exportSchema = false)
+@TypeConverters(BitmapTypeConverter::class)
 abstract class BaseDeDatos: RoomDatabase() {
-    abstract fun CasaDao(): CasaDao
-    companion object {
-        @Volatile
-        private var Instance: BaseDeDatos? = null
-
-        fun getDatabase(context: Context): BaseDeDatos {
-            return Instance ?: synchronized(this) {
-                Room.databaseBuilder(context, BaseDeDatos::class.java, "base_de_datos")
-                    .build()
-                    .also { Instance = it }
-            }
-        }
-    }
+    abstract fun viviendaDao(): ViviendaDao
 }

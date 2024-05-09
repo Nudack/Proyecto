@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DropdownMenu
@@ -18,6 +18,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -36,7 +37,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.hospedafcil.R
 import com.example.hospedafcil.ui.theme.apartamento.ui.ApartamentoScreen
-import com.example.hospedafcil.ui.theme.casa.ui.CasaScreen
+import com.example.hospedafcil.ui.theme.casa.ui.NavGraph
 import com.example.hospedafcil.ui.theme.habitacion.ui.HabitacionScreen
 import com.example.hospedafcil.ui.theme.home.ui.HomeScreen
 import com.example.hospedafcil.ui.theme.horario.ui.HorarioScreen
@@ -53,6 +54,7 @@ enum class Screens {
     Horario
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HospedaFacilApp(
     navController: NavHostController = rememberNavController()
@@ -62,7 +64,7 @@ fun HospedaFacilApp(
         backStackEntry?.destination?.route ?: Screens.Home.name
     )
     Scaffold (
-        topBar = { HospedaTopAppBar(Modifier.fillMaxWidth(), currentScreen, navController) },
+        topBar = { HospedaTopAppBar(modifier = Modifier.fillMaxWidth(), title = currentScreen.name, canNavigateBack = false, navController = navController)},
         bottomBar = { HospedaBottomAppBar(Modifier.fillMaxWidth(), navController) }
         ) { innerPadding ->
         NavHost(
@@ -76,7 +78,7 @@ fun HospedaFacilApp(
                 HomeScreen(navController)
             }
             composable(route = Screens.Casas.name){
-                CasaScreen()
+                NavGraph(navController)
             }
             composable(route = Screens.Apartamentos.name){
                 ApartamentoScreen()
@@ -99,10 +101,17 @@ fun HospedaFacilApp(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HospedaTopAppBar(modifier: Modifier, currentScreen: Screens, navController: NavHostController){
+fun HospedaTopAppBar(
+    modifier: Modifier,
+    title: String,
+    scrollBehavior: TopAppBarScrollBehavior? = null,
+    navController: NavHostController = rememberNavController(),
+    canNavigateBack: Boolean
+){
     var expanded by remember { mutableStateOf(false) }
     CenterAlignedTopAppBar(
-        title = { Text(text = currentScreen.name) },
+        title = { Text(text = title)},
+        scrollBehavior = scrollBehavior,
         modifier = modifier,
         navigationIcon = {
             IconButton(onClick = { expanded = !expanded }) {
@@ -110,12 +119,16 @@ fun HospedaTopAppBar(modifier: Modifier, currentScreen: Screens, navController: 
             }
         },
         actions = {
-            IconButton(onClick = {  }) {
-                Icon(imageVector = Icons.Filled.AccountCircle, contentDescription = "Usuario")
+            if (canNavigateBack){
+                IconButton(onClick = navigateUp) {
+                    Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
+                }
             }
         }
     )
-    Box(modifier = Modifier.wrapContentSize(Alignment.TopStart).padding(top = 51.dp, start = 8.dp)){
+    Box(modifier = Modifier
+        .wrapContentSize(Alignment.TopStart)
+        .padding(top = 51.dp, start = 8.dp)){
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
             DropdownMenuItem(
                 text = { Text(text = "Home") },
