@@ -21,3 +21,9 @@ Creación de clase Cartas para enseñar en las diferentes pantallas, problema qu
 
 # Dia 31/03/24
 Arreglo del error de crash al navegar a la pantalla de casas. Era porque estaba recogiendo la pantalla como infinita porque en el navhost habia un modificador de vertical scroll y termino el codigo de ejemplos de las pantallas de viviendas 
+
+# Dia 03/04/24
+Añadiendo Room no terminado con ayuda de los repositorios de android developer
+
+# 04/04/24 - 09/05/24
+Cambio del Room Hilt a uno normal, borrando algunos archivos y creando otros nuevos
