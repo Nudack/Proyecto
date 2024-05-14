@@ -21,13 +21,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
@@ -35,9 +35,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.room.Room
 import com.example.hospedafcil.R
+import com.example.hospedafcil.data.AppViewModel
+import com.example.hospedafcil.data.BaseDeDatos
 import com.example.hospedafcil.ui.theme.apartamento.ui.ApartamentoScreen
-import com.example.hospedafcil.ui.theme.casa.ui.NavGraph
+import com.example.hospedafcil.ui.theme.casa.ui.ViviendasScreen
 import com.example.hospedafcil.ui.theme.habitacion.ui.HabitacionScreen
 import com.example.hospedafcil.ui.theme.home.ui.HomeScreen
 import com.example.hospedafcil.ui.theme.horario.ui.HorarioScreen
@@ -51,7 +54,8 @@ enum class Screens {
     Habitaciones,
     Inventario,
     Notas,
-    Horario
+    Horario,
+    ViviendaDetail
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -59,6 +63,14 @@ enum class Screens {
 fun HospedaFacilApp(
     navController: NavHostController = rememberNavController()
     ){
+    val applicationContext = LocalContext.current
+    val db = Room.databaseBuilder(
+        context = applicationContext,
+        BaseDeDatos::class.java,
+        "app_database").build()
+    val viviendaDao = db.viviendaDao()
+    val appViewModel = AppViewModel(viviendaDao)
+
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = Screens.valueOf(
         backStackEntry?.destination?.route ?: Screens.Home.name
@@ -75,10 +87,10 @@ fun HospedaFacilApp(
                 .padding(innerPadding)
             ){
             composable(route = Screens.Home.name){
-                HomeScreen(navController)
+                HomeScreen(navController, appViewModel)
             }
             composable(route = Screens.Casas.name){
-                NavGraph(navController)
+                ViviendasScreen(viewModel = appViewModel)
             }
             composable(route = Screens.Apartamentos.name){
                 ApartamentoScreen()
@@ -95,6 +107,7 @@ fun HospedaFacilApp(
             composable(route = Screens.Horario.name){
                 HorarioScreen()
             }
+            composable(route = Screens.ViviendaDetail.name){
         }
     }
 }
@@ -120,7 +133,7 @@ fun HospedaTopAppBar(
         },
         actions = {
             if (canNavigateBack){
-                IconButton(onClick = navigateUp) {
+                IconButton(onClick = {navController.navigateUp()}) {
                     Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
                 }
             }
@@ -164,7 +177,6 @@ fun HospedaTopAppBar(
 
 @Composable
 fun HospedaBottomAppBar(modifier: Modifier, navController: NavHostController){
-    val selectedItem by remember { mutableIntStateOf(0) }
     val listItems = listOf(
         NavigationBarItem(
             route = Screens.Notas.name,

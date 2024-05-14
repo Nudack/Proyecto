@@ -24,4 +24,13 @@ interface ViviendaDao {
 
     @Query("SELECT * FROM vivienda ORDER BY nombre ASC")
     fun getAllViviendas(): Flow<List<Vivienda>>
+
+    @Query("Select * from vivienda where tipo = :tipo")
+    fun getAllCasas(tipo: String): Flow<List<Vivienda>>
+
+    @Query("Select * from vivienda where tipo = :tipo")
+    fun getAllHabitaciones(tipo: String): Flow<List<Vivienda>>
+
+    @Query("Select * from vivienda where tipo = :tipo")
+    fun getAllApartamentos(tipo: String): Flow<List<Vivienda>>
 }
