@@ -27,3 +27,6 @@ Añadiendo Room no terminado con ayuda de los repositorios de android developer
 
 # 04/04/24 - 09/05/24
 Cambio del Room Hilt a uno normal, borrando algunos archivos y creando otros nuevos
+
+# 14/04/24
+Comprobacion de listas en pantalla, salen las viviendas en diferentes listas dependiendo del tipo de vivienda
