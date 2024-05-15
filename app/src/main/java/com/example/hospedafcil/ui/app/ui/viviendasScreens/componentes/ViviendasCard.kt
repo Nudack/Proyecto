@@ -1,4 +1,4 @@
-package com.example.hospedafcil.ui.theme.casa.ui
+package com.example.hospedafcil.ui.app.ui.viviendasScreens.componentes
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column

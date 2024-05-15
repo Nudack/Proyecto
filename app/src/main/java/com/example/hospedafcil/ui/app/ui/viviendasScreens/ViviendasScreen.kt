@@ -1,4 +1,4 @@
-package com.example.hospedafcil.ui.theme.casa.ui
+package com.example.hospedafcil.ui.app.ui.viviendasScreens
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -8,6 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.example.hospedafcil.data.AppViewModel
+import com.example.hospedafcil.ui.app.ui.viviendasScreens.componentes.AddViviendaAlertDialog
+import com.example.hospedafcil.ui.app.ui.viviendasScreens.componentes.AddViviendaFloatingActionButton
+import com.example.hospedafcil.ui.app.ui.viviendasScreens.componentes.ViviendasContent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -1,4 +1,4 @@
-package com.example.hospedafcil.ui.theme.home.ui
+package com.example.hospedafcil.ui.app.ui.viviendasScreens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -18,10 +18,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.hospedafcil.data.AppViewModel
 import com.example.hospedafcil.data.vivienda.Vivienda
-import com.example.hospedafcil.ui.theme.hospedaFacil.ui.Screens
+import com.example.hospedafcil.ui.app.ui.ui.ui.Screens
 import kotlinx.coroutines.flow.Flow
 
 @Composable
@@ -62,6 +63,7 @@ fun CarouselCard(
     LazyRow(modifier = Modifier.height(300.dp)) {
         items(viviendasState.value) { vivienda ->
             Column {
+                Text(text = tipoVivienda, fontSize = 25.sp)
                 Image(
                     bitmap = vivienda.imagen?.asImageBitmap()!!,
                     contentDescription = null,

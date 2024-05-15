@@ -1,4 +1,4 @@
-package com.example.hospedafcil.ui.theme.nota.ui
+package com.example.hospedafcil.ui.app.ui.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -15,33 +15,36 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
-import com.example.hospedafcil.R
+import com.example.hospedafcil.data.AppViewModel
+import com.example.hospedafcil.data.nota.Nota
+import kotlinx.coroutines.flow.Flow
 
-val notas = listOf(
-    Nota(R.drawable.casa1, "Prueba1", "descipcion de prueba para la lista de notas"),
-    Nota(R.drawable.casa2, "Prueba1", "descipcion de prueba para la lista de notas"),
-    Nota(R.drawable.casa3, "Prueba1", "descipcion de prueba para la lista de notas"),
-    Nota(R.drawable.casa1, "Prueba1", "descipcion de prueba para la lista de notas"),
-    Nota(R.drawable.casa2, "Prueba1", "descipcion de prueba para la lista de notas"),
-    Nota(R.drawable.casa3, "Prueba1", "descipcion de prueba para la lista de notas")
-)
 
 @Composable
-fun NotaScreen(){
-    Notas(notas)
+fun NotaScreen(viewModel: AppViewModel){
+    Notas(viewModel.notas, viewModel)
 }
 
 @Composable
-fun Notas (notas: List<Nota>) {
+fun Notas (notas: Flow<List<Nota>>, viewModel: AppViewModel) {
+    val notasState = notas.collectAsState(initial = emptyList())
     LazyColumn {
-        items(items = notas) { cadaNota->
-            Row (modifier = Modifier.height(60.dp).padding(top = 8.dp, bottom = 8.dp)) {
+        items(items = notasState.value) { cadaNota->
+            LaunchedEffect(key1 = Unit) {
+                viewModel.getVivienda(cadaNota.idVivienda)
+            }
+            val vivienda = viewModel.vivienda
+            Row (modifier = Modifier
+                .height(60.dp)
+                .padding(top = 8.dp, bottom = 8.dp)) {
                 Image(
-                    painter = painterResource(id = cadaNota.imagePath),
+                    bitmap = vivienda.imagen?.asImageBitmap()!!,
                     contentDescription = null,
                     modifier = Modifier
                         .clip(CircleShape)
@@ -51,7 +54,7 @@ fun Notas (notas: List<Nota>) {
                 )
 
                 Column{
-                    Text(text = cadaNota.nomVivenda)
+                    Text(text = vivienda.nombre)
                     Text(text = cadaNota.descripcion)
                 }
 

@@ -1,4 +1,4 @@
-package com.example.hospedafcil.ui.theme.casa.ui
+package com.example.hospedafcil.ui.app.ui.viviendasScreens.componentes
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory

@@ -1,4 +1,4 @@
-package com.example.hospedafcil.ui.theme.apartamento.ui
+package com.example.hospedafcil.ui.app.ui.viviendasScreens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -6,17 +6,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,19 +24,14 @@ import androidx.compose.ui.unit.dp
 import com.example.hospedafcil.R
 import com.example.hospedafcil.ui.theme.Carta
 
-val cartas = listOf(
-    Carta(R.drawable.casa1, "Descripcion de ejemplo de la apartamento 1", "Apartamento 1"),
-    Carta(R.drawable.casa2, "Descripcion de ejemplo de la apartamento 2", "Apartamento 2"),
-    Carta(R.drawable.casa3, "Descripcion de ejemplo de la apartamento 3", "Apartamento 3")
-)
 
 @Composable
 fun ApartamentoScreen(){
-    FilledCardExample(cartas = cartas)
+    FilledCardExampleApartamento(cartas = cartas)
 }
 
 @Composable
-fun FilledCardExample(cartas: List<Carta>) {
+fun FilledCardExampleApartamento(cartas: List<Carta>) {
     LazyColumn {items(items = cartas) { cadaCarta ->
         Card (Modifier.padding(16.dp)) {
             Column (Modifier.padding(8.dp)) {

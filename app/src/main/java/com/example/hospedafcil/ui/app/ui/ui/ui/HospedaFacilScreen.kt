@@ -1,4 +1,4 @@
-package com.example.hospedafcil.ui.theme.hospedaFacil.ui
+package com.example.hospedafcil.ui.app.ui.ui.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -39,13 +39,11 @@ import androidx.room.Room
 import com.example.hospedafcil.R
 import com.example.hospedafcil.data.AppViewModel
 import com.example.hospedafcil.data.BaseDeDatos
-import com.example.hospedafcil.ui.theme.apartamento.ui.ApartamentoScreen
-import com.example.hospedafcil.ui.theme.casa.ui.ViviendasScreen
-import com.example.hospedafcil.ui.theme.habitacion.ui.HabitacionScreen
-import com.example.hospedafcil.ui.theme.home.ui.HomeScreen
-import com.example.hospedafcil.ui.theme.horario.ui.HorarioScreen
-import com.example.hospedafcil.ui.theme.inventario.ui.InventarioScreen
-import com.example.hospedafcil.ui.theme.nota.ui.NotaScreen
+import com.example.hospedafcil.ui.app.ui.viviendasScreens.ApartamentoScreen
+import com.example.hospedafcil.ui.app.ui.viviendasScreens.ViviendasScreen
+import com.example.hospedafcil.ui.app.ui.viviendasScreens.HabitacionScreen
+import com.example.hospedafcil.ui.app.ui.ui.NotaScreen
+import com.example.hospedafcil.ui.app.ui.viviendasScreens.HomeScreen
 
 enum class Screens {
     Home,
@@ -69,7 +67,9 @@ fun HospedaFacilApp(
         BaseDeDatos::class.java,
         "app_database").build()
     val viviendaDao = db.viviendaDao()
-    val appViewModel = AppViewModel(viviendaDao)
+    val notaDao = db.notaDao()
+    val inventarioDao = db.inventarioDao()
+    val appViewModel = AppViewModel(viviendaDao, notaDao, inventarioDao)
 
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = Screens.valueOf(
@@ -102,12 +102,14 @@ fun HospedaFacilApp(
                 InventarioScreen()
             }
             composable(route = Screens.Notas.name){
-                NotaScreen()
+                NotaScreen(viewModel = appViewModel)
             }
             composable(route = Screens.Horario.name){
-                HorarioScreen()
+
             }
             composable(route = Screens.ViviendaDetail.name){
+
+            }
         }
     }
 }
@@ -167,10 +169,6 @@ fun HospedaTopAppBar(
                 text = { Text(text = "Notas") },
                 onClick = { navController.navigate(Screens.Notas.name) ; expanded = !expanded }
             )
-            DropdownMenuItem(
-                text = { Text(text = "Horario") },
-                onClick = { navController.navigate(Screens.Horario.name) ; expanded = !expanded }
-            )
         }
     }
 }
@@ -186,11 +184,6 @@ fun HospedaBottomAppBar(modifier: Modifier, navController: NavHostController){
             route = Screens.Home.name,
             selectedIcono = painterResource(id = R.drawable.baseline_home_filled_24),
             unSelectedIcono = painterResource(id = R.drawable.baseline_home_filled_24)
-        ),
-        NavigationBarItem(
-            route = Screens.Horario.name,
-            selectedIcono = painterResource(id = R.drawable.baseline_date_range_24),
-            unSelectedIcono = painterResource(id = R.drawable.baseline_date_range_24)
         )
     )
     NavigationBar (modifier = modifier) {
