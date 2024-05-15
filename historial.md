@@ -30,3 +30,6 @@ Cambio del Room Hilt a uno normal, borrando algunos archivos y creando otros nue
 
 # 14/04/24
 Comprobacion de listas en pantalla, salen las viviendas en diferentes listas dependiendo del tipo de vivienda
+
+#15/05/24
+Terminado el room
