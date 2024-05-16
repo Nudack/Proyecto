@@ -1,5 +1,6 @@
 package com.example.hospedafcil.data
 
+import android.graphics.Bitmap
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -21,10 +22,9 @@ class AppViewModel (
     var vivienda by mutableStateOf(Vivienda(0, "", "", "", null))
     var openDialog by mutableStateOf(false)
     val viviendas = viviendaDao.getAllViviendas()
-
-    val casaList = viviendaDao.getAllCasas("Casa")
-    val habitacionList = viviendaDao.getAllHabitaciones("Habitación")
-    val apartamentoList = viviendaDao.getAllApartamentos("Apartamento")
+    val casas = viviendaDao.getViviendasPorTipo("Casa")
+    val habitaciones = viviendaDao.getViviendasPorTipo("Habitación")
+    val apartamentos = viviendaDao.getViviendasPorTipo("Apartamento")
 
     fun addVivienda(vivienda: Vivienda) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -38,6 +38,12 @@ class AppViewModel (
         }
     }
 
+    fun getViviendasPorTipo(tipo: String){
+        viewModelScope.launch (Dispatchers.IO) {
+            viviendaDao.getViviendasPorTipo(tipo)
+        }
+    }
+
     fun deleteVivienda(vivienda: Vivienda){
         viewModelScope.launch (Dispatchers.IO) {
             viviendaDao.deleteVivienda(vivienda)
@@ -48,6 +54,22 @@ class AppViewModel (
         viewModelScope.launch (Dispatchers.IO) {
             viviendaDao.updateVivienda(vivienda)
         }
+    }
+
+    fun updateViviendaNombre(nombre: String) {
+        vivienda = vivienda.copy(nombre = nombre)
+    }
+
+    fun updateViviendaTipo(tipo: String) {
+        vivienda = vivienda.copy(tipo = tipo)
+    }
+
+    fun updateViviendaDescripcion(descripcion: String) {
+        vivienda = vivienda.copy(descripcion = descripcion)
+    }
+
+    fun updateViviendaImagen(imagen: Bitmap?) {
+        vivienda = vivienda.copy(imagen = imagen)
     }
 
     fun closeDialog() {
@@ -85,6 +107,12 @@ class AppViewModel (
     fun updateNota(nota: Nota) {
         viewModelScope.launch (Dispatchers.IO) {
             notaDao.updateNota(nota)
+        }
+    }
+
+    fun getNotaPorVivienda(id: Int){
+        viewModelScope.launch (Dispatchers.IO) {
+            notaDao.getNotasByVivienda(id)
         }
     }
 

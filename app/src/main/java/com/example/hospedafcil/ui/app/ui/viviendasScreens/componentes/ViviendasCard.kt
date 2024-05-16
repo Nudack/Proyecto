@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.hospedafcil.data.vivienda.Vivienda
 
 @Composable
@@ -41,15 +42,15 @@ fun ViviendasCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column {
-                Text(vivienda.nombre)
-                Text(vivienda.tipo)
-                Text(vivienda.descripcion)
+                Text("Nombre: " + vivienda.nombre, fontSize = 25.sp)
                 vivienda.imagen?.let {
                     Image(
                         bitmap = it.asImageBitmap(),
                         contentDescription = null
                     )
                 }
+                Text("Tipo: " + vivienda.tipo, fontSize = 25.sp)
+                Text("Descripción: " + vivienda.descripcion, fontSize = 25.sp)
             }
 
         }

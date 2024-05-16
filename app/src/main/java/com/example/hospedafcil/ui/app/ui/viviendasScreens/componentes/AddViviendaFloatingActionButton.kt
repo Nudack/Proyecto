@@ -13,10 +13,7 @@ import androidx.compose.ui.Modifier
 fun AddViviendaFloatingActionButton(
     openDialog: () -> Unit
 ) {
-    FloatingActionButton(
-        onClick = { openDialog() },
-        modifier = Modifier.background(MaterialTheme.colorScheme.primary)
-        ) {
+    FloatingActionButton( onClick = { openDialog() } ) {
         Icon(
             imageVector = Icons.Filled.Add,
             contentDescription = "Añadir Vivienda")

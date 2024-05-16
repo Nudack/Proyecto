@@ -25,6 +25,6 @@ interface NotaDao {
     @Query("SELECT * FROM nota ORDER BY nota_id ASC")
     fun getAllNotas(): Flow<List<Nota>>
 
-    @Query("SELECT * FROM nota WHERE vivienda_id = :vivienda_id")
-    fun getNotasByVivienda(vivienda_id: Int): Flow<List<Nota>>
+    @Query("SELECT * FROM nota WHERE vivienda_id = :viviendaId")
+    fun getNotasByVivienda(viviendaId: Int): Flow<List<Nota>>
 }

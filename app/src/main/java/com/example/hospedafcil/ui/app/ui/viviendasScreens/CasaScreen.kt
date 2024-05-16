@@ -14,16 +14,16 @@ import com.example.hospedafcil.ui.app.ui.viviendasScreens.componentes.ViviendasC
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ViviendasScreen(
+fun CasaScreen(
     viewModel: AppViewModel
 ) {
-    val viviendas by viewModel.viviendas.collectAsState( initial = emptyList() )
+    val casas by viewModel.casas.collectAsState(emptyList())
     Scaffold(
         topBar = { TopAppBar(title = { Text(text = "Viviendas") }) },
         content = { padding ->
             ViviendasContent(
                 padding = padding,
-                viviendas = viviendas
+                viviendas = casas
             )
             AddViviendaAlertDialog(
                 openDialog = viewModel.openDialog,

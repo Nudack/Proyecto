@@ -39,6 +39,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.canhub.cropper.CropImage
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageContractOptions
@@ -121,7 +122,7 @@ fun AddViviendaAlertDialog(
                                 onClick = { selectedTypeIndex = index },
                                 selected = index == selectedTypeIndex
                             ) {
-                                Text(label)
+                                Text(label, fontSize = 10.sp)
                             }
                         }
                     }
@@ -160,7 +161,7 @@ fun AddViviendaAlertDialog(
                     }
                     else {
                         Image(
-                            painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                            painter = painterResource(id = R.drawable.baseline_image_not_supported_24),
                             contentDescription = null,
                             modifier = Modifier
                                 .background(Color.LightGray)
@@ -180,7 +181,7 @@ fun AddViviendaAlertDialog(
             confirmButton = {
                 TextButton(onClick = {
                     closeDialog()
-                    val vivienda = Vivienda(0, nombre, tiposVivienda[selectedTypeIndex], descripcion, bitmap)
+                    val vivienda = Vivienda(id = 0, nombre = nombre, tipo = tiposVivienda[selectedTypeIndex], descripcion = descripcion, imagen =  bitmap)
                     addVivienda(vivienda)
                 }) {
                     Text(text = "Añadir")

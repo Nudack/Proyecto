@@ -1,4 +1,4 @@
-package com.example.hospedafcil.ui.app.ui.ui.ui
+package com.example.hospedafcil.ui.app.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding

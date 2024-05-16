@@ -1,4 +1,4 @@
-package com.example.hospedafcil.ui.app.ui.ui.ui
+package com.example.hospedafcil.ui.app.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,29 +32,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.navArgument
 import androidx.room.Room
 import com.example.hospedafcil.R
 import com.example.hospedafcil.data.AppViewModel
 import com.example.hospedafcil.data.BaseDeDatos
 import com.example.hospedafcil.ui.app.ui.viviendasScreens.ApartamentoScreen
-import com.example.hospedafcil.ui.app.ui.viviendasScreens.ViviendasScreen
 import com.example.hospedafcil.ui.app.ui.viviendasScreens.HabitacionScreen
-import com.example.hospedafcil.ui.app.ui.ui.NotaScreen
+import com.example.hospedafcil.ui.app.ui.viviendasScreens.CasaScreen
 import com.example.hospedafcil.ui.app.ui.viviendasScreens.HomeScreen
-
-enum class Screens {
-    Home,
-    Casas,
-    Apartamentos,
-    Habitaciones,
-    Inventario,
-    Notas,
-    Horario,
-    ViviendaDetail
-}
+import com.example.hospedafcil.ui.app.ui.viviendasScreens.componentes.UpdateViviendaScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -71,44 +62,53 @@ fun HospedaFacilApp(
     val inventarioDao = db.inventarioDao()
     val appViewModel = AppViewModel(viviendaDao, notaDao, inventarioDao)
 
-    val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentScreen = Screens.valueOf(
-        backStackEntry?.destination?.route ?: Screens.Home.name
-    )
     Scaffold (
-        topBar = { HospedaTopAppBar(modifier = Modifier.fillMaxWidth(), title = currentScreen.name, canNavigateBack = false, navController = navController)},
+        topBar = { HospedaTopAppBar(modifier = Modifier.fillMaxWidth(), canNavigateBack = false, navController = navController) },
         bottomBar = { HospedaBottomAppBar(Modifier.fillMaxWidth(), navController) }
         ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screens.Home.name,
+            startDestination = "Home",
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
             ){
-            composable(route = Screens.Home.name){
-                HomeScreen(navController, appViewModel)
+            composable(route = "Home"){
+                HomeScreen(
+                    viewModel = appViewModel,
+                    navigateToUpdateVivienda = { viviendaId ->
+                        navController.navigate("updateVivienda/$viviendaId")
+                    }
+                    )
             }
-            composable(route = Screens.Casas.name){
-                ViviendasScreen(viewModel = appViewModel)
+            composable(route = "Casas"){
+                CasaScreen(viewModel = appViewModel)
             }
-            composable(route = Screens.Apartamentos.name){
+            composable(route = "Apartamentos"){
                 ApartamentoScreen()
             }
-            composable(route = Screens.Habitaciones.name){
+            composable(route = "Habitaciones"){
                 HabitacionScreen()
             }
-            composable(route = Screens.Inventario.name){
+            composable(route = "Inventario"){
                 InventarioScreen()
             }
-            composable(route = Screens.Notas.name){
+            composable(route = "Notas"){
                 NotaScreen(viewModel = appViewModel)
             }
-            composable(route = Screens.Horario.name){
-
-            }
-            composable(route = Screens.ViviendaDetail.name){
-
+            composable(
+                route = "updateVivienda/{viviendaId}",
+                arguments = listOf(
+                    navArgument("viviendaId"){
+                        type = NavType.IntType
+                    }
+                )
+            ) {
+                val viviendaId = it.arguments?.getInt("viviendaId") ?: 0
+                UpdateViviendaScreen(
+                    viewModel = appViewModel,
+                    viviendaId = viviendaId,
+                    navigateBack = {navController.navigateUp()})
             }
         }
     }
@@ -118,11 +118,23 @@ fun HospedaFacilApp(
 @Composable
 fun HospedaTopAppBar(
     modifier: Modifier,
-    title: String,
     scrollBehavior: TopAppBarScrollBehavior? = null,
     navController: NavHostController = rememberNavController(),
     canNavigateBack: Boolean
 ){
+    // Get the current back stack entry
+    val backStackEntry by navController.currentBackStackEntryAsState()
+
+    // Set the title based on the current destination
+    val title = when (backStackEntry?.destination?.route) {
+        "Home" -> "Home"
+        "Casas" -> "Casas"
+        "Apartamentos" -> "Apartamentos"
+        "Habitaciones" -> "Habitaciones"
+        "Inventario" -> "Inventario"
+        "Notas" -> "Notas"
+        else -> ""
+    }
     var expanded by remember { mutableStateOf(false) }
     CenterAlignedTopAppBar(
         title = { Text(text = title)},
@@ -147,27 +159,27 @@ fun HospedaTopAppBar(
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
             DropdownMenuItem(
                 text = { Text(text = "Home") },
-                onClick = { navController.navigate(Screens.Home.name) ; expanded = !expanded }
+                onClick = { navController.navigate("Home") ; expanded = !expanded }
             )
             DropdownMenuItem(
                 text = { Text(text = "Casas") },
-                onClick = { navController.navigate(Screens.Casas.name) ; expanded = !expanded }
+                onClick = { navController.navigate("Casas") ; expanded = !expanded }
             )
             DropdownMenuItem(
                 text = { Text(text = "Apartamentos") },
-                onClick = { navController.navigate(Screens.Apartamentos.name) ; expanded = !expanded }
+                onClick = { navController.navigate("Apartamentos") ; expanded = !expanded }
             )
             DropdownMenuItem(
                 text = { Text(text = "Habitaciones") },
-                onClick = { navController.navigate(Screens.Habitaciones.name) ; expanded = !expanded }
+                onClick = { navController.navigate("Habitaciones") ; expanded = !expanded }
             )
             DropdownMenuItem(
                 text = { Text(text = "Inventario") },
-                onClick = { navController.navigate(Screens.Inventario.name) ; expanded = !expanded }
+                onClick = { navController.navigate("Inventario") ; expanded = !expanded }
             )
             DropdownMenuItem(
                 text = { Text(text = "Notas") },
-                onClick = { navController.navigate(Screens.Notas.name) ; expanded = !expanded }
+                onClick = { navController.navigate("Notas") ; expanded = !expanded }
             )
         }
     }
@@ -177,13 +189,13 @@ fun HospedaTopAppBar(
 fun HospedaBottomAppBar(modifier: Modifier, navController: NavHostController){
     val listItems = listOf(
         NavigationBarItem(
-            route = Screens.Notas.name,
+            route = "Notas",
             selectedIcono = painterResource(id = R.drawable.baseline_note_24),
-            unSelectedIcono = painterResource(id = R.drawable.baseline_note_24)
-        ),NavigationBarItem(
-            route = Screens.Home.name,
+            unSelectedIcono = painterResource(id = R.drawable.outline_note_24)
+        ), NavigationBarItem(
+            route = "Home",
             selectedIcono = painterResource(id = R.drawable.baseline_home_filled_24),
-            unSelectedIcono = painterResource(id = R.drawable.baseline_home_filled_24)
+            unSelectedIcono = painterResource(id = R.drawable.outline_home_24)
         )
     )
     NavigationBar (modifier = modifier) {
