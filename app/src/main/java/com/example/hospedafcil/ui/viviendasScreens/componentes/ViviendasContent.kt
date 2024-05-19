@@ -1,4 +1,4 @@
-package com.example.hospedafcil.ui.app.ui.viviendasScreens.componentes
+package com.example.hospedafcil.ui.viviendasScreens.componentes
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,7 +12,9 @@ import com.example.hospedafcil.data.vivienda.Vivienda
 @Composable
 fun ViviendasContent(
     padding: PaddingValues,
-    viviendas: List<Vivienda>
+    viviendas: List<Vivienda>,
+    deleteVivienda: (vivienda: Vivienda) -> Unit,
+    navigateToUpdateVivienda: (viviendaId: Int) -> Unit
 ){
     LazyColumn (modifier = Modifier
         .fillMaxSize()
@@ -20,7 +22,9 @@ fun ViviendasContent(
     ) {
         items(viviendas){ vivienda ->
             ViviendasCard(
-                vivienda = vivienda
+                vivienda = vivienda,
+                deleteVivienda = { deleteVivienda(vivienda) },
+                navigateToUpdateVivienda = { navigateToUpdateVivienda(vivienda.id) }
             )
         }
     }

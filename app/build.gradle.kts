@@ -84,4 +84,7 @@ dependencies {
 
     //Imagenes
     implementation("com.github.CanHub:Android-Image-Cropper:4.0.0")
+
+    //Corutinas
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 }

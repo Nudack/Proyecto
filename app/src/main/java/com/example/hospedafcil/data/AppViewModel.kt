@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hospedafcil.data.inventario.InventarioDao
@@ -11,7 +12,9 @@ import com.example.hospedafcil.data.nota.Nota
 import com.example.hospedafcil.data.nota.NotaDao
 import com.example.hospedafcil.data.vivienda.Vivienda
 import com.example.hospedafcil.data.vivienda.ViviendaDao
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class AppViewModel (
@@ -32,7 +35,7 @@ class AppViewModel (
         }
     }
 
-    fun getVivienda(id: Int){
+    fun getVivienda(id: Int) {
         viewModelScope.launch (Dispatchers.IO) {
             viviendaDao.getVivienda(id)
         }

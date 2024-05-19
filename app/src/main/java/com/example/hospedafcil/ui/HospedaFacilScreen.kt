@@ -1,4 +1,4 @@
-package com.example.hospedafcil.ui.app.ui
+package com.example.hospedafcil.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -41,11 +41,11 @@ import androidx.room.Room
 import com.example.hospedafcil.R
 import com.example.hospedafcil.data.AppViewModel
 import com.example.hospedafcil.data.BaseDeDatos
-import com.example.hospedafcil.ui.app.ui.viviendasScreens.ApartamentoScreen
-import com.example.hospedafcil.ui.app.ui.viviendasScreens.HabitacionScreen
-import com.example.hospedafcil.ui.app.ui.viviendasScreens.CasaScreen
-import com.example.hospedafcil.ui.app.ui.viviendasScreens.HomeScreen
-import com.example.hospedafcil.ui.app.ui.viviendasScreens.componentes.UpdateViviendaScreen
+import com.example.hospedafcil.ui.viviendasScreens.ApartamentoScreen
+import com.example.hospedafcil.ui.viviendasScreens.HabitacionScreen
+import com.example.hospedafcil.ui.viviendasScreens.CasaScreen
+import com.example.hospedafcil.ui.viviendasScreens.HomeScreen
+import com.example.hospedafcil.ui.viviendasScreens.componentes.UpdateViviendaScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -75,14 +75,16 @@ fun HospedaFacilApp(
             ){
             composable(route = "Home"){
                 HomeScreen(
+                    viewModel = appViewModel
+                    )
+            }
+            composable(route = "Casas"){
+                CasaScreen(
                     viewModel = appViewModel,
                     navigateToUpdateVivienda = { viviendaId ->
                         navController.navigate("updateVivienda/$viviendaId")
                     }
                     )
-            }
-            composable(route = "Casas"){
-                CasaScreen(viewModel = appViewModel)
             }
             composable(route = "Apartamentos"){
                 ApartamentoScreen()

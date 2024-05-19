@@ -1,4 +1,4 @@
-package com.example.hospedafcil.ui.app.ui.viviendasScreens
+package com.example.hospedafcil.ui.viviendasScreens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -26,11 +26,14 @@ import com.example.hospedafcil.data.AppViewModel
 import com.example.hospedafcil.data.vivienda.Vivienda
 import kotlinx.coroutines.flow.Flow
 import androidx.compose.ui.res.vectorResource
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun HomeScreen(
     viewModel: AppViewModel,
-    navigateToUpdateVivienda: (viviendaId: Int) -> Unit
+    navController: NavHostController = rememberNavController()
 ) {
     Column(
         modifier = Modifier
@@ -40,24 +43,24 @@ fun HomeScreen(
     ) {
 
         Text(text = "Casas", textAlign = TextAlign.Start)
-        CarouselCard(viewModel.casas, navigateToUpdateVivienda)
+        CarouselCard(viewModel.casas, navController)
 
         Spacer(modifier = Modifier.padding(16.dp))
 
         Text(text = "Apartamentos")
-        CarouselCard(viewModel.apartamentos, navigateToUpdateVivienda)
+        CarouselCard(viewModel.apartamentos, navController)
 
         Spacer(modifier = Modifier.padding(16.dp))
 
         Text(text = "Habitaciones")
-        CarouselCard(viewModel.habitaciones, navigateToUpdateVivienda)
+        CarouselCard(viewModel.habitaciones, navController)
     }
 }
 
 @Composable
 fun CarouselCard(
     viviendas: Flow<List<Vivienda>>,
-    navigateToUpdateVivienda: (viviendaId: Int) -> Unit
+    navController: NavController
 ) {
     val viviendasState = viviendas.collectAsState(initial = emptyList())
 
@@ -66,8 +69,16 @@ fun CarouselCard(
             Column(
                 modifier = Modifier
                     .clickable {
-                navigateToUpdateVivienda(vivienda.id)
-                }
+                        if (vivienda.tipo == "Casa") {
+                            navController.navigate("Casas")
+                        }
+                        if (vivienda.tipo == "Apartamento") {
+                            navController.navigate("Apartamentos")
+                        }
+                        else {
+                            navController.navigate("Habitaciones")
+                        }
+                    }
                     .padding(end = 8.dp, start = 8.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally

@@ -1,4 +1,4 @@
-package com.example.hospedafcil.ui.app.ui.viviendasScreens.componentes
+package com.example.hospedafcil.ui.viviendasScreens.componentes
 
 import androidx.compose.foundation.background
 import androidx.compose.material.icons.Icons

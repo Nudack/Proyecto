@@ -1,6 +1,5 @@
 package com.example.hospedafcil.data.vivienda
 
-import android.graphics.Bitmap
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -21,7 +20,7 @@ interface ViviendaDao {
     suspend fun deleteVivienda(vivienda: Vivienda)
 
     @Query("SELECT * FROM vivienda WHERE vivienda_id = :id")
-    fun getVivienda(id: Int): Flow<Vivienda>
+    fun getVivienda(id: Int): Vivienda
 
     @Query("SELECT * FROM vivienda ORDER BY vivienda_nombre ASC")
     fun getAllViviendas(): Flow<List<Vivienda>>

@@ -8,7 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.example.hospedafcil.ui.theme.HospedaFácilTheme
-import com.example.hospedafcil.ui.app.ui.HospedaFacilApp
+import com.example.hospedafcil.ui.HospedaFacilApp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

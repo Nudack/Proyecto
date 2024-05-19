@@ -11,11 +11,11 @@ data class Vivienda(
     @ColumnInfo(name = "vivienda_id")
     val id: Int = 0,
     @ColumnInfo(name = "vivienda_tipo")
-    val tipo: String,
+    val tipo: String = "",
     @ColumnInfo(name = "vivienda_nombre")
-    val nombre: String,
+    val nombre: String = "",
     @ColumnInfo(name = "vivienda_descripcion")
-    val descripcion: String,
+    val descripcion: String = "",
     @ColumnInfo(name = "vivienda_imagen")
-    val imagen: Bitmap?
+    val imagen: Bitmap? = null
 )
