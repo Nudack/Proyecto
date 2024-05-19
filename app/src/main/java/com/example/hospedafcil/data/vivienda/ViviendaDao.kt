@@ -20,7 +20,7 @@ interface ViviendaDao {
     suspend fun deleteVivienda(vivienda: Vivienda)
 
     @Query("SELECT * FROM vivienda WHERE vivienda_id = :id")
-    fun getVivienda(id: Int): Vivienda
+    fun getVivienda(id: Int): Flow<Vivienda>
 
     @Query("SELECT * FROM vivienda ORDER BY vivienda_nombre ASC")
     fun getAllViviendas(): Flow<List<Vivienda>>

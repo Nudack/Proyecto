@@ -28,12 +28,11 @@ import kotlinx.coroutines.flow.Flow
 import androidx.compose.ui.res.vectorResource
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun HomeScreen(
     viewModel: AppViewModel,
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController
 ) {
     Column(
         modifier = Modifier
@@ -69,14 +68,10 @@ fun CarouselCard(
             Column(
                 modifier = Modifier
                     .clickable {
-                        if (vivienda.tipo == "Casa") {
-                            navController.navigate("Casas")
-                        }
-                        if (vivienda.tipo == "Apartamento") {
-                            navController.navigate("Apartamentos")
-                        }
-                        else {
-                            navController.navigate("Habitaciones")
+                        when (vivienda.tipo) {
+                            "Casa" -> navController.navigate("Casas")
+                            "Apartamento" -> navController.navigate("Apartamentos")
+                            else -> navController.navigate("Habitaciones")
                         }
                     }
                     .padding(end = 8.dp, start = 8.dp),

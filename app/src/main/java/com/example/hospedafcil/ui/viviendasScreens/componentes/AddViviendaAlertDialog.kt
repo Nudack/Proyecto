@@ -8,7 +8,6 @@ import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -146,10 +145,8 @@ fun AddViviendaAlertDialog(
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
                                 .background(Color.Blue)
-                                .size(400.dp)
-                                .border(
-                                    width = 1.dp,
-                                    color = Color.Black,)
+                                .size(250.dp)
+                                .padding(20.dp)
                                 .clickable {
                                     val cropOption = CropImageContractOptions(
                                         CropImage.CancelledResult.uriContent,
@@ -165,7 +162,7 @@ fun AddViviendaAlertDialog(
                             contentDescription = null,
                             modifier = Modifier
                                 .background(Color.LightGray)
-                                .size(400.dp)
+                                .size(250.dp)
                                 .padding(20.dp)
                                 .clickable {
                                     val cropOption = CropImageContractOptions(

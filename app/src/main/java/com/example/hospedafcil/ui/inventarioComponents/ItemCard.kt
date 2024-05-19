@@ -1,4 +1,4 @@
-package com.example.hospedafcil.ui.viviendasScreens.componentes
+package com.example.hospedafcil.ui.inventarioComponents
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -23,17 +23,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.hospedafcil.R
-import com.example.hospedafcil.data.vivienda.Vivienda
+import com.example.hospedafcil.data.inventario.Item
 
 @Composable
-fun ViviendasCard(
-    vivienda: Vivienda,
-    deleteVivienda: () -> Unit,
-    navigateToUpdateVivienda: (viviendaId: Int) -> Unit
+fun ItemCard (
+    item: Item,
+    deleteItem: () -> Unit,
+    navigateToUpdateItem: (itemId: Int) -> Unit
 ){
     Card (
         shape = MaterialTheme.shapes.medium,
@@ -53,17 +51,17 @@ fun ViviendasCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(12.dp)
-                .clickable { navigateToUpdateVivienda(vivienda.id) },
+                .clickable { navigateToUpdateItem(item.id) },
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
             Column {
                 vivienda.imagen?.let {
-                Image(
-                    bitmap = it.asImageBitmap(),
-                    contentDescription = null,
-                    modifier = Modifier.size(250.dp)
-                )
+                    Image(
+                        bitmap = it.asImageBitmap(),
+                        contentDescription = null,
+                        modifier = Modifier.size(250.dp)
+                    )
                 }
                 Text("Nombre: " + vivienda.nombre, fontSize = 20.sp)
                 Text("Descripción", fontSize = 20.sp )
@@ -72,12 +70,12 @@ fun ViviendasCard(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Row {
-                    IconButton(onClick = { navigateToUpdateVivienda(vivienda.id) }) {
+                    IconButton(onClick = { navigateToUpdateItem(item.id) }) {
                         Icon(
                             imageVector = Icons.Filled.Edit,
                             contentDescription = null)
                     }
-                    IconButton(onClick = { deleteVivienda() }) {
+                    IconButton(onClick = { deleteItem() }) {
                         Icon(
                             imageVector = Icons.Filled.Delete,
                             contentDescription = null)
@@ -87,4 +85,4 @@ fun ViviendasCard(
 
         }
     }
-}
+})

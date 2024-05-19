@@ -13,10 +13,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
@@ -27,41 +29,33 @@ import kotlinx.coroutines.flow.Flow
 
 
 @Composable
-fun NotaScreen(viewModel: AppViewModel){
-    Notas(viewModel.notas, viewModel)
-}
-
-@Composable
-fun Notas (notas: Flow<List<Nota>>, viewModel: AppViewModel) {
-    val notasState = notas.collectAsState(initial = emptyList())
-    LazyColumn {
-        items(items = notasState.value) { cadaNota->
-            LaunchedEffect(key1 = Unit) {
-                viewModel.getVivienda(cadaNota.idVivienda)
-            }
-            val vivienda = viewModel.vivienda
-            Row (modifier = Modifier
-                .height(60.dp)
-                .padding(top = 8.dp, bottom = 8.dp)) {
-                Image(
-                    bitmap = vivienda.imagen?.asImageBitmap()!!,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .size(50.dp)
-                        .padding(end = 2.dp)
-
-                )
-
-                Column{
-                    Text(text = vivienda.nombre)
-                    Text(text = cadaNota.descripcion)
+fun NotaScreen (viewModel: AppViewModel){
+    val notas by viewModel.notas.collectAsState(emptyList())
+    Scaffold(
+        content = { padding ->
+            NotasContent(
+                padding = padding,
+                viviendas = notas,
+                navigateToUpdateVivienda = navigateToUpdateNota,
+                deleteVivienda = { nota ->
+                    viewModel.deleteNota(nota)
                 }
-
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(imageVector = Icons.Filled.Delete, contentDescription = null)
+            )
+            AddNotaAlertDialog(
+                openDialog = viewModel.openDialog,
+                closeDialog = {
+                    viewModel.closeDialog() },
+                addVivienda = { nota ->
+                    viewModel.addNota(nota)
                 }
-            }
+            )
+        },
+        floatingActionButton = {
+            AddNotaFloatingActionButton(
+                openDialog = {
+                    viewModel.openNotaDialog()
+                }
+            )
         }
-    }
+    )
 }

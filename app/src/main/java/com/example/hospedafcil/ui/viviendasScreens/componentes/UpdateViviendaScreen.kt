@@ -157,7 +157,7 @@ fun UpdateViviendaScreen(
                            contentDescription = null,
                            modifier = Modifier
                                .background(Color.LightGray)
-                               .size(300.dp)
+                               .size(250.dp)
                                .padding(8.dp)
                                .clickable {
                                    val cropOption = CropImageContractOptions(
@@ -175,7 +175,7 @@ fun UpdateViviendaScreen(
                            contentDescription = null,
                            modifier = Modifier
                                .background(Color.LightGray)
-                               .size(300.dp)
+                               .size(250.dp)
                                .padding(8.dp)
                                .clickable {
                                    val cropOption = CropImageContractOptions(

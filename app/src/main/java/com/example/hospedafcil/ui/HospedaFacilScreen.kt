@@ -75,7 +75,8 @@ fun HospedaFacilApp(
             ){
             composable(route = "Home"){
                 HomeScreen(
-                    viewModel = appViewModel
+                    viewModel = appViewModel,
+                    navController
                     )
             }
             composable(route = "Casas"){
@@ -84,13 +85,23 @@ fun HospedaFacilApp(
                     navigateToUpdateVivienda = { viviendaId ->
                         navController.navigate("updateVivienda/$viviendaId")
                     }
-                    )
+                )
             }
             composable(route = "Apartamentos"){
-                ApartamentoScreen()
+                ApartamentoScreen(
+                    viewModel = appViewModel,
+                    navigateToUpdateVivienda = { viviendaId ->
+                        navController.navigate("updateVivienda/$viviendaId")
+                    }
+                )
             }
             composable(route = "Habitaciones"){
-                HabitacionScreen()
+                HabitacionScreen(
+                    viewModel = appViewModel,
+                    navigateToUpdateVivienda = { viviendaId ->
+                        navController.navigate("updateVivienda/$viviendaId")
+                    }
+                )
             }
             composable(route = "Inventario"){
                 InventarioScreen()
@@ -110,7 +121,9 @@ fun HospedaFacilApp(
                 UpdateViviendaScreen(
                     viewModel = appViewModel,
                     viviendaId = viviendaId,
-                    navigateBack = {navController.navigateUp()})
+                    navigateBack = {navController.navigateUp()
+                    }
+                )
             }
         }
     }
