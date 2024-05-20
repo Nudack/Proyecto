@@ -41,6 +41,8 @@ import androidx.room.Room
 import com.example.hospedafcil.R
 import com.example.hospedafcil.data.AppViewModel
 import com.example.hospedafcil.data.BaseDeDatos
+import com.example.hospedafcil.ui.inventarioComponents.UpdateItemScreen
+import com.example.hospedafcil.ui.notaComponents.UpdateNotaScreen
 import com.example.hospedafcil.ui.viviendasScreens.ApartamentoScreen
 import com.example.hospedafcil.ui.viviendasScreens.HabitacionScreen
 import com.example.hospedafcil.ui.viviendasScreens.CasaScreen
@@ -51,7 +53,7 @@ import com.example.hospedafcil.ui.viviendasScreens.componentes.UpdateViviendaScr
 @Composable
 fun HospedaFacilApp(
     navController: NavHostController = rememberNavController()
-    ){
+){
     val applicationContext = LocalContext.current
     val db = Room.databaseBuilder(
         context = applicationContext,
@@ -65,19 +67,19 @@ fun HospedaFacilApp(
     Scaffold (
         topBar = { HospedaTopAppBar(modifier = Modifier.fillMaxWidth(), canNavigateBack = false, navController = navController) },
         bottomBar = { HospedaBottomAppBar(Modifier.fillMaxWidth(), navController) }
-        ) { innerPadding ->
+    ) { innerPadding ->
         NavHost(
             navController = navController,
             startDestination = "Home",
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-            ){
+        ){
             composable(route = "Home"){
                 HomeScreen(
                     viewModel = appViewModel,
                     navController
-                    )
+                )
             }
             composable(route = "Casas"){
                 CasaScreen(
@@ -103,12 +105,6 @@ fun HospedaFacilApp(
                     }
                 )
             }
-            composable(route = "Inventario"){
-                InventarioScreen()
-            }
-            composable(route = "Notas"){
-                NotaScreen(viewModel = appViewModel)
-            }
             composable(
                 route = "updateVivienda/{viviendaId}",
                 arguments = listOf(
@@ -123,6 +119,52 @@ fun HospedaFacilApp(
                     viviendaId = viviendaId,
                     navigateBack = {navController.navigateUp()
                     }
+                )
+            }
+            composable(route = "Inventario"){
+                InventarioScreen(
+                    viewModel = appViewModel,
+                    navigateToUpdateItem = { itemId ->
+                        navController.navigate("updateItem/$itemId")
+                    }
+                )
+            }
+            composable(
+                route = "updateItem/{itemId}",
+                arguments = listOf(
+                    navArgument("itemId"){
+                        type = NavType.IntType
+                    }
+                )
+            ) {
+                val itemId = it.arguments?.getInt("itemId") ?: 0
+                UpdateItemScreen(
+                    viewModel = appViewModel,
+                    itemId = itemId,
+                    navigateBack = { navController.navigateUp() }
+                )
+            }
+            composable(route = "Notas"){
+                NotaScreen(
+                    viewModel = appViewModel,
+                    navigateToUpdateNota = { notaId ->
+                        navController.navigate("updateNota/$notaId")
+                    }
+                )
+            }
+            composable(
+                route = "updateNota/{notaId}",
+                arguments = listOf(
+                    navArgument("notaId"){
+                        type = NavType.IntType
+                    }
+                )
+            ) {
+                val notaId = it.arguments?.getInt("notaId") ?: 0
+                UpdateNotaScreen(
+                    viewModel = appViewModel,
+                    notaId = notaId,
+                    navigateBack = { navController.navigateUp() }
                 )
             }
         }
@@ -211,6 +253,11 @@ fun HospedaBottomAppBar(modifier: Modifier, navController: NavHostController){
             route = "Home",
             selectedIcono = painterResource(id = R.drawable.baseline_home_filled_24),
             unSelectedIcono = painterResource(id = R.drawable.outline_home_24)
+        ),
+        NavigationBarItem(
+            route = "Inventario",
+            selectedIcono = painterResource(id = R.drawable.baseline_inventory_24),
+            unSelectedIcono = painterResource(id = R.drawable.outline_inventory_2_24)
         )
     )
     NavigationBar (modifier = modifier) {

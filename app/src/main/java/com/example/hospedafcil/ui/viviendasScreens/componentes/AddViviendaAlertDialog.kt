@@ -44,7 +44,7 @@ import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
 import com.example.hospedafcil.R
-import com.example.hospedafcil.data.vivienda.Vivienda
+import com.example.hospedafcil.data.tablas.Vivienda
 import kotlinx.coroutines.job
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -91,7 +91,7 @@ fun AddViviendaAlertDialog(
                 ImageDecoder.decodeBitmap(source)
             }
         }
-        
+
         AlertDialog(
             onDismissRequest = { closeDialog() },
             title = {

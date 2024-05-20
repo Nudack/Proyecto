@@ -23,11 +23,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.hospedafcil.R
 import com.example.hospedafcil.data.AppViewModel
-import com.example.hospedafcil.data.vivienda.Vivienda
 import kotlinx.coroutines.flow.Flow
 import androidx.compose.ui.res.vectorResource
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.example.hospedafcil.data.tablas.Vivienda
 
 @Composable
 fun HomeScreen(

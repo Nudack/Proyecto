@@ -23,11 +23,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.hospedafcil.R
-import com.example.hospedafcil.data.vivienda.Vivienda
+import com.example.hospedafcil.data.tablas.Vivienda
 
 @Composable
 fun ViviendasCard(
@@ -59,11 +57,11 @@ fun ViviendasCard(
         ) {
             Column {
                 vivienda.imagen?.let {
-                Image(
-                    bitmap = it.asImageBitmap(),
-                    contentDescription = null,
-                    modifier = Modifier.size(250.dp)
-                )
+                    Image(
+                        bitmap = it.asImageBitmap(),
+                        contentDescription = null,
+                        modifier = Modifier.size(250.dp)
+                    )
                 }
                 Text("Nombre: " + vivienda.nombre, fontSize = 20.sp)
                 Text("Descripción", fontSize = 20.sp )

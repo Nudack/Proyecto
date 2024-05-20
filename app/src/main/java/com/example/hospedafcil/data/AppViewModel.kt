@@ -4,15 +4,19 @@ import android.graphics.Bitmap
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.hospedafcil.data.inventario.InventarioDao
-import com.example.hospedafcil.data.inventario.Item
-import com.example.hospedafcil.data.nota.Nota
-import com.example.hospedafcil.data.nota.NotaDao
-import com.example.hospedafcil.data.vivienda.Vivienda
-import com.example.hospedafcil.data.vivienda.ViviendaDao
+import com.example.hospedafcil.data.daos.InventarioDao
+import com.example.hospedafcil.data.daos.NotaDao
+import com.example.hospedafcil.data.daos.ViviendaDao
+import com.example.hospedafcil.data.tablas.Item
+import com.example.hospedafcil.data.tablas.Nota
+import com.example.hospedafcil.data.tablas.Vivienda
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class AppViewModel (
@@ -27,16 +31,17 @@ class AppViewModel (
     val habitaciones = viviendaDao.getViviendasPorTipo("Habitación")
     val apartamentos = viviendaDao.getViviendasPorTipo("Apartamento")
 
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
     fun addVivienda(vivienda: Vivienda) {
         viewModelScope.launch(Dispatchers.IO) {
             viviendaDao.insertVivienda(vivienda)
         }
     }
 
-    fun getVivienda(id: Int) {
-        viewModelScope.launch (Dispatchers.IO) {
-            viviendaDao.getVivienda(id)
-        }
+    fun getVivienda(id: Int): Flow<List<Vivienda>> {
+        return viviendaDao.getVivienda(id)
     }
 
     fun deleteVivienda(vivienda: Vivienda){
@@ -78,8 +83,7 @@ class AppViewModel (
     //#########################################Nota#################################################
     var openNotaDialog by mutableStateOf(false)
     val notas = notaDao.getAllNotas()
-    var nota by mutableStateOf(Nota(0, "", "", 0))
-
+    var nota by mutableStateOf(Nota(0, "", ""))
 
     fun addNota(nota: Nota){
         viewModelScope.launch (Dispatchers.IO) {
@@ -87,10 +91,8 @@ class AppViewModel (
         }
     }
 
-    fun getNota(id: Int){
-        viewModelScope.launch (Dispatchers.IO) {
-            notaDao.getNota(id)
-        }
+    fun getNota(id: Int): Flow<List<Nota>> {
+        return notaDao.getNota(id)
     }
 
     fun deleteNota(nota: Nota){
@@ -100,15 +102,17 @@ class AppViewModel (
     }
 
     fun updateNota(nota: Nota) {
-        viewModelScope.launch (Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             notaDao.updateNota(nota)
         }
     }
 
-    fun getNotaPorVivienda(id: Int){
-        viewModelScope.launch (Dispatchers.IO) {
-            notaDao.getNotasByVivienda(id)
-        }
+    fun updateNotaAsunto(asunto: String) {
+        nota = nota.copy(asunto = asunto)
+    }
+
+    fun updateNotaDescripcion(descripcion: String) {
+        nota = nota.copy(descripcion = descripcion)
     }
 
     fun closeNotaDialog() {
@@ -121,9 +125,49 @@ class AppViewModel (
 
     //#########################################Inventario############################################
 
-    var openInventarioDialog by mutableStateOf(false)
+    var openItemDialog by mutableStateOf(false)
     var inventario = inventarioDao.getInventario()
-    var item = mutableStateOf( Item(0, "", "", 0))
+    var item by mutableStateOf( Item(0, "", "", ""))
 
+    fun addItem(item: Item){
+        viewModelScope.launch (Dispatchers.IO) {
+            inventarioDao.insertItem(item)
+        }
+    }
 
+    fun getItem(id: Int): Flow<List<Item>> {
+        return inventarioDao.getItem(id)
+    }
+
+    fun deleteItem(nota: Item){
+        viewModelScope.launch (Dispatchers.IO) {
+            inventarioDao.deleteItem(nota)
+        }
+    }
+
+    fun updateItem(nota: Item) {
+        viewModelScope.launch(Dispatchers.IO) {
+            inventarioDao.updateItem(nota)
+        }
+    }
+
+    fun updateItemNombre(nombre: String) {
+        item = item.copy(nombre = nombre)
+    }
+
+    fun updateItemDescripcion(descripcion: String) {
+        item = item.copy(descripcion = descripcion)
+    }
+
+    fun updateItemCantidad(cantidad: String) {
+        item = item.copy(cantidad = cantidad)
+    }
+
+    fun closeItemDialog() {
+        openItemDialog = false
+    }
+
+    fun openItemDialog() {
+        openItemDialog = true
+    }
 }

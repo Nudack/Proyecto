@@ -1,4 +1,4 @@
-package com.example.hospedafcil.ui.viviendasScreens.componentes
+package com.example.hospedafcil.ui.notaComponents
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -7,12 +7,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 
 @Composable
-fun AddViviendaFloatingActionButton(
-    openDialog: () -> Unit
+fun AddNotaFloatingActionButton(
+    openNotaDialog: () -> Unit
 ) {
-    FloatingActionButton( onClick = { openDialog() } ) {
+    FloatingActionButton( onClick = { openNotaDialog() } ) {
         Icon(
             imageVector = Icons.Filled.Add,
-            contentDescription = "Añadir Vivienda")
+            contentDescription = "Añadir Nota")
     }
 }

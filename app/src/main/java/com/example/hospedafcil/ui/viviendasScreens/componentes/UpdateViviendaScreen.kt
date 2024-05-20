@@ -27,7 +27,7 @@ import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -46,6 +46,8 @@ import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
 import com.example.hospedafcil.R
 import com.example.hospedafcil.data.AppViewModel
+import com.example.hospedafcil.data.tablas.Vivienda
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,153 +58,156 @@ fun UpdateViviendaScreen(
 ) {
 
     //###############################Falla recoger Viendas#########################################
+    val viviendaActualList: List<Vivienda> by viewModel.getVivienda(viviendaId).collectAsState(initial = emptyList())
 
-    LaunchedEffect(key1 = Unit) {
-        viewModel.getVivienda(viviendaId)
-    }
-    val vivienda = viewModel.vivienda
-
-    val context = LocalContext.current
-    var bitmap by remember { mutableStateOf(viewModel.vivienda.imagen) }
-    var imageUri by remember { mutableStateOf<Uri?>(null) }
-    val tiposVivienda = listOf("Casa", "Apartamento", "Habitación")
-    var selectedTypeIndex by remember { mutableIntStateOf(0) }
-
-    val imageCropLauncher = rememberLauncherForActivityResult(contract = CropImageContract()) { result ->
-        if(result.isSuccessful){
-            imageUri = result.uriContent
-        }
+    if (viviendaActualList.isEmpty()) {
+        Text(text = "CARGANDO...")
     }
 
-    if (imageUri != null){
-        bitmap = if(Build.VERSION.SDK_INT < 28){
-            val inputStream = context.contentResolver.openInputStream(imageUri!!)
-            val options = BitmapFactory.Options()
-            options.inJustDecodeBounds = true
-            BitmapFactory.decodeStream(inputStream, null, options)
-            inputStream?.close()
+    viviendaActualList.forEach { vivienda: Vivienda ->
+        val context = LocalContext.current
+        var bitmap by remember { mutableStateOf(viewModel.vivienda.imagen) }
+        var imageUri by remember { mutableStateOf<Uri?>(null) }
+        val tiposVivienda = listOf("Casa", "Apartamento", "Habitación")
+        var selectedTypeIndex by remember { mutableIntStateOf(0) }
 
-            val scaledOptions = BitmapFactory.Options()
-            scaledOptions.inSampleSize = 2
-            context.contentResolver.openInputStream(imageUri!!)?.use { input ->
-                BitmapFactory.decodeStream(input, null, scaledOptions)
+        val imageCropLauncher = rememberLauncherForActivityResult(contract = CropImageContract()) { result ->
+            if(result.isSuccessful){
+                imageUri = result.uriContent
             }
-        } else {
-            val source = ImageDecoder.createSource(context.contentResolver, imageUri!!)
-            ImageDecoder.decodeBitmap(source)
         }
+
+        if (imageUri != null){
+            bitmap = if(Build.VERSION.SDK_INT < 28){
+                val inputStream = context.contentResolver.openInputStream(imageUri!!)
+                val options = BitmapFactory.Options()
+                options.inJustDecodeBounds = true
+                BitmapFactory.decodeStream(inputStream, null, options)
+                inputStream?.close()
+
+                val scaledOptions = BitmapFactory.Options()
+                scaledOptions.inSampleSize = 2
+                context.contentResolver.openInputStream(imageUri!!)?.use { input ->
+                    BitmapFactory.decodeStream(input, null, scaledOptions)
+                }
+            } else {
+                val source = ImageDecoder.createSource(context.contentResolver, imageUri!!)
+                ImageDecoder.decodeBitmap(source)
+            }
+        }
+
+        AlertDialog(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp),
+            properties = DialogProperties(
+                usePlatformDefaultWidth = false
+            ),
+            onDismissRequest = { navigateBack() },
+            title = {
+                Text(text = "Actualizar Vivenda")
+            },
+            text = {
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    TextField(
+                        value = vivienda.nombre,
+                        onValueChange = { nombre ->
+                            viewModel.updateViviendaNombre(nombre)
+                        },
+                        placeholder = {
+                            Text(text = "Nombre")
+                        },
+                        singleLine = true,
+                        maxLines = 1
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    SingleChoiceSegmentedButtonRow {
+                        tiposVivienda.forEachIndexed { index, label ->
+                            SegmentedButton(
+                                shape = SegmentedButtonDefaults.itemShape(index = index, count = tiposVivienda.size),
+                                onClick = { selectedTypeIndex = index },
+                                selected = index == selectedTypeIndex
+                            ) {
+                                Text(label, fontSize = 13.sp)
+                            }
+                        }
+                        viewModel.updateViviendaTipo(tiposVivienda[selectedTypeIndex])
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    TextField(
+                        value = vivienda.descripcion,
+                        onValueChange = { descripcion ->
+                            viewModel.updateViviendaDescripcion(descripcion)
+                        },
+                        placeholder = {
+                            Text(text = "Descripción")
+                        },
+                        singleLine = true,
+                        maxLines = 1
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    if(vivienda.imagen != null) {
+                        Image(
+                            bitmap = vivienda.imagen.asImageBitmap(),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .background(Color.LightGray)
+                                .size(250.dp)
+                                .padding(8.dp)
+                                .clickable {
+                                    val cropOption = CropImageContractOptions(
+                                        CropImage.CancelledResult.uriContent,
+                                        CropImageOptions()
+                                    )
+                                    imageCropLauncher.launch(cropOption)
+                                }
+                        )
+                        viewModel.updateViviendaImagen(bitmap)
+                    }
+                    else{
+                        Image(
+                            imageVector = ImageVector.vectorResource(id = R.drawable.baseline_image_search_24),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .background(Color.LightGray)
+                                .size(250.dp)
+                                .padding(8.dp)
+                                .clickable {
+                                    val cropOption = CropImageContractOptions(
+                                        CropImage.CancelledResult.uriContent,
+                                        CropImageOptions()
+                                    )
+                                    imageCropLauncher.launch(cropOption)
+                                }
+                        )
+                        viewModel.updateViviendaImagen(bitmap)
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        viewModel.updateVivienda(vivienda)
+                        navigateBack()
+                    }){
+                    Text(text = "Actualizar")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = { navigateBack() }){
+                    Text(text = "Cancelar")
+                }
+            }
+        )
     }
-
-    AlertDialog(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(20.dp),
-        properties = DialogProperties(
-            usePlatformDefaultWidth = false
-        ),
-        onDismissRequest = { navigateBack() },
-        title = {
-            Text(text = "Actualizar Vivenda")
-        },
-        text = {
-               Column(
-                   verticalArrangement = Arrangement.Center,
-                   horizontalAlignment = Alignment.CenterHorizontally
-                   ) {
-                   TextField(
-                       value = vivienda.nombre,
-                       onValueChange = { nombre ->
-                           viewModel.updateViviendaNombre(nombre)
-                       },
-                       placeholder = {
-                           Text(text = "Nombre")
-                       },
-                       singleLine = true,
-                       maxLines = 1
-                   )
-
-                   Spacer(modifier = Modifier.height(8.dp))
-
-                   SingleChoiceSegmentedButtonRow {
-                       tiposVivienda.forEachIndexed { index, label ->
-                           SegmentedButton(
-                               shape = SegmentedButtonDefaults.itemShape(index = index, count = tiposVivienda.size),
-                               onClick = { selectedTypeIndex = index ; viewModel.updateViviendaTipo(tiposVivienda[index]) },
-                               selected = index == selectedTypeIndex
-                           ) {
-                               Text(label, fontSize = 13.sp)
-                           }
-                       }
-                   }
-
-                   Spacer(modifier = Modifier.height(8.dp))
-
-                   TextField(
-                       value = vivienda.descripcion,
-                       onValueChange = { descripcion ->
-                           viewModel.updateViviendaDescripcion(descripcion)
-                       },
-                       placeholder = {
-                           Text(text = "Descripción")
-                       },
-                       singleLine = true,
-                       maxLines = 1
-                   )
-
-                   Spacer(modifier = Modifier.height(16.dp))
-
-                   if(vivienda.imagen != null) {
-                       Image(
-                           bitmap = vivienda.imagen.asImageBitmap(),
-                           contentDescription = null,
-                           modifier = Modifier
-                               .background(Color.LightGray)
-                               .size(250.dp)
-                               .padding(8.dp)
-                               .clickable {
-                                   val cropOption = CropImageContractOptions(
-                                       CropImage.CancelledResult.uriContent,
-                                       CropImageOptions()
-                                   )
-                                   imageCropLauncher.launch(cropOption)
-                               }
-                       )
-                       viewModel.updateViviendaImagen(bitmap)
-                   }
-                   else{
-                       Image(
-                           imageVector = ImageVector.vectorResource(id = R.drawable.baseline_image_search_24),
-                           contentDescription = null,
-                           modifier = Modifier
-                               .background(Color.LightGray)
-                               .size(250.dp)
-                               .padding(8.dp)
-                               .clickable {
-                                   val cropOption = CropImageContractOptions(
-                                       CropImage.CancelledResult.uriContent,
-                                       CropImageOptions()
-                                   )
-                                   imageCropLauncher.launch(cropOption)
-                               }
-                       )
-                       viewModel.updateViviendaImagen(bitmap)
-                   }
-               }
-        },
-        confirmButton = {
-            TextButton(
-                onClick = {
-                    viewModel.updateVivienda(vivienda)
-                    navigateBack()
-                }){
-                Text(text = "Actualizar")
-            }
-        },
-        dismissButton = {
-            TextButton(
-                onClick = { navigateBack() }){
-                Text(text = "Cancelar")
-            }
-        }
-    )
 }

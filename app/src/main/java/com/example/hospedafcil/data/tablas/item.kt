@@ -1,4 +1,4 @@
-package com.example.hospedafcil.data.inventario
+package com.example.hospedafcil.data.tablas
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -9,5 +9,5 @@ data class Item(
     val id: Int,
     val nombre: String,
     val descripcion: String,
-    val cantidad: Int,
+    val cantidad: String,
 )

@@ -3,15 +3,15 @@ package com.example.hospedafcil.data
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.hospedafcil.data.inventario.Inventario
-import com.example.hospedafcil.data.inventario.InventarioDao
-import com.example.hospedafcil.data.nota.Nota
-import com.example.hospedafcil.data.nota.NotaDao
+import com.example.hospedafcil.data.daos.InventarioDao
+import com.example.hospedafcil.data.daos.NotaDao
+import com.example.hospedafcil.data.daos.ViviendaDao
+import com.example.hospedafcil.data.tablas.Item
+import com.example.hospedafcil.data.tablas.Nota
+import com.example.hospedafcil.data.tablas.Vivienda
 import com.example.hospedafcil.data.typeConverters.BitmapTypeConverter
-import com.example.hospedafcil.data.vivienda.Vivienda
-import com.example.hospedafcil.data.vivienda.ViviendaDao
 
-@Database (entities = [Vivienda::class, Nota::class, Inventario::class], version = 1, exportSchema = false)
+@Database (entities = [Vivienda::class, Nota::class, Item::class], version = 1, exportSchema = false)
 @TypeConverters(BitmapTypeConverter::class)
 abstract class BaseDeDatos: RoomDatabase() {
     abstract fun viviendaDao(): ViviendaDao
